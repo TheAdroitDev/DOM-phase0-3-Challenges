@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI Calculator</title>
+    <link rel="shortcut icon" href="WISE_Logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>BMI Calculator (Metric Units & US Units)</h1>
+        <div class="calculator">
+            Use US Units
+            <label class="switch">
+                <input id="auto-convert" type="checkbox">
+                <span class="slider round"></span>
+            </label>
+            <label id="height-label" for="height">Enter your height in cm:</label>
+            <input id="height" placeholder="Height" type="number">
+
+            <label id="weight-label" for="weight">Enter your weight in kg:</label>
+            <input id="weight" placeholder="Weight" type="number">
+
+            <div class="buttons">
+                <button id="calculate-bmi">
+                    Calculate BMI
+                </button>
+                <button id="clear">Clear</button>
+            </div>
+            <div id="showbmi"></div>
+        </div>
+       <a target="_blank" href="../calculator/index.html"> <button class="bodmas-btn" id="calculate-bmi">
+            View our BODMAS supported Calculator
+        </button></a>
+    </div>
+    <!-- JavaScript -->
+    <script>
+        const height = document.getElementById('height');
+        const weight = document.getElementById('weight');
+        const heightLabel = document.getElementById('height-label');
+        const weightLabel = document.getElementById('weight-label');
+        const calculateBMIbutton = document.getElementById('calculate-bmi');
+        const autoConvert = document.getElementById('auto-convert');
+        const clearUnits = document.getElementById('clear');
+        const showBMI = document.getElementById('showbmi');
+
+        // Calculate BMI(Body Mass Index)
+        function calculateBMI() {
+            // Use Metric Units
+            if (!autoConvert.checked) {
+                const heightValue = height.value;
+                const weightValue = weight.value;
+                const bmi = weightValue * 10000 / (heightValue * heightValue);
+                const bmiRounded = bmi.toFixed(1)
+                console.log(bmiRounded);
+                const div = document.createElement('div');
+                div.classList.add("result")
+                if (bmiRounded < 18.5) {
+                    div.innerHTML = `${bmiRounded} You are underweight!`
+                } else if (bmiRounded >= 18.5 && bmiRounded < 24.9) {
+                    div.innerHTML = `${bmiRounded} You are at Normal Weight`
+                } else if (bmiRounded  >= 25 && bmiRounded < 29.9) {
+                    div.innerHTML = `${bmiRounded} You are at Overweight !`
+                } else if (bmiRounded  >=  30 & bmiRounded < 34.9) {
+                    div.innerHTML = `${bmiRounded} You are  Obese !`
+                } else if (bmiRounded  >=  35 & bmiRounded < 39.9) {
+                    div.innerHTML = `${bmiRounded} You are Severly Obese !!`
+                } else if(bmiRounded > 40){
+                    div.innerHTML = `${bmiRounded} You are Morbidly Obese !!`
+                }
+
+                showBMI.appendChild(div);
+            }
+            // Use US Units
+            else {
+                const heightValue = height.value;
+                const weightValue = weight.value;
+                const bmi = (703 * weightValue) / (heightValue * heightValue);
+                const bmiRounded = bmi.toFixed(1);
+                console.log(bmiRounded);
+                const div = document.createElement('div');
+                if (bmiRounded < 18.5) {
+                    div.innerHTML = `${bmiRounded} You are underweight!`
+                } else if (bmiRounded == 18.5 && bmiRounded < 24.9) {
+                    div.innerHTML = `${bmiRounded} You are at Normal Weight`
+                } else if (bmiRounded == 25 && bmiRounded < 29.9) {
+                    div.innerHTML = `${bmiRounded} You are at Overweight !`
+                } else if (bmiRounded == 30 & bmiRounded < 34.9) {
+                    div.innerHTML = `${bmiRounded} You are at Obese !`
+                } else if (bmiRounded == 35 & bmiRounded < 39.9) {
+                    div.innerHTML = `${bmiRounded} You are at Severly Obese !!`
+                } else if(bmiRounded > 40){
+                    div.innerHTML = `${bmiRounded} You are at Morbidly Obese !!`
+                }
+                showBMI.appendChild(div);
+            }
+        }
+        // Clears Units
+        calculateBMIbutton.addEventListener('click', () => {
+            calculateBMI()
+        })
+        // DOM Manipulation
+        autoConvert.addEventListener('click', () => {
+            if (autoConvert.checked) {
+                heightLabel.innerHTML = "Enter your height in inches";
+                weightLabel.innerHTML = "Enter your weight in lbs";
+            }
+            else {
+                heightLabel.innerHTML = "Enter your height in cm";
+                weightLabel.innerHTML = "Enter your weight in kg";
+
+            }
+        })
+
+        clearUnits.addEventListener("click", () => {
+            window.location.reload();
+        })
+
+
+    </script>
+</body>
+
+</html>
