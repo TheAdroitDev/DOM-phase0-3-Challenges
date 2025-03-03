@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Collector</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <link rel="shortcut icon" href="WISE_Logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <h1>Every Opinion Counts!</h1>
+    <div class="container2">
+        <div id="section-1">
+            <label for="username">Enter your username</label>
+            <input id="username" type="text" placeholder="Username">
+            <div class="container">
+                <div class="star-widget">
+                    <input type="radio" name="rate" id="rate-5"><label for="rate-5" class="fas fa-star"></label>
+                    <input type="radio" name="rate" id="rate-4"><label for="rate-4" class="fas fa-star"></label>
+                    <input type="radio" name="rate" id="rate-3"><label for="rate-3" class="fas fa-star"></label>
+                    <input type="radio" name="rate" id="rate-2"><label for="rate-2" class="fas fa-star"></label>
+                    <input type="radio" name="rate" id="rate-1"><label for="rate-1" class="fas fa-star"></label>
+                    <form id="user-form">
+                        <div class="textarea">
+                            <textarea id="users-comment" cols="30" placeholder="Describe your experience.."></textarea>
+                        </div>
+                        <div class="btn">
+                            <button id="post-btn" class="btn-hover color-5" type="submit">Post</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div id="section-2">
+            <h1>Reviews</h1>
+            <ul id="reviewslist"></ul>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const userForm = document.getElementById("user-form");
+            const userComment = document.getElementById("users-comment");
+            const postButton = document.getElementById("post-btn");
+            const userName = document.getElementById("username");
+            const reviewsList = document.getElementById("reviewslist");
+
+            const loadReviews = () => {
+                reviewsList.innerHTML = "";
+                const storedReviews = JSON.parse(localStorage.getItem("reviews")) || [];
+                storedReviews.forEach(review => {
+                    const li = document.createElement("li");
+                    li.innerHTML = `<strong>${review.name}:</strong> ${review.comment} ${"⭐".repeat(review.rating)} (${review.rating}/5)`;
+                    reviewsList.appendChild(li);
+                });
+            };
+
+            userForm.addEventListener("submit", (e) => {
+                e.preventDefault();
+                const selectedRating = document.querySelector('input[name="rate"]:checked');
+                if (userName.value && userComment.value && selectedRating) {
+                    const reviews = JSON.parse(localStorage.getItem("reviews")) || [];
+                    reviews.push({
+                        name: userName.value,
+                        rating: selectedRating.id.split("-")[1],
+                        comment: userComment.value,
+                    });
+                    localStorage.setItem("reviews", JSON.stringify(reviews));
+                    loadReviews();
+                    userForm.reset();
+                } else {
+                    alert("Please fill all fields and select a rating.");
+                }
+            });
+            loadReviews();
+        });
+    </script>
+</body>
+
+</html>
